@@ -9,15 +9,12 @@ class Mutation(ABC):
         self.probability = probability
 
     def mutate(self, population_parent: Population) -> Population:
-        offspring = Population()
-
         for individual in population_parent.population:
             if np.random.rand() < self.probability:
-                offspring.add_to_population(self._mutate(individual, population_parent))
+                self._mutate(individual, population_parent)
 
-        # offspring.trim_children(population_parent.population_size)
-        return offspring
+        return population_parent
 
     @abstractmethod
-    def _mutate(self, individual: Individual, population: Population) -> Population:
+    def _mutate(self, individual: Individual, population: Population):
         pass
