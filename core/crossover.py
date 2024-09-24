@@ -4,5 +4,8 @@ class Crossover:
         self.probability = probability
         self.allowedRepresentation = Representation()
 
-    
-    
+    def cross(self, population_parent: Population) -> Population:
+        pass
+
+    def _cross(self, population_parent: Population) -> Population:
+        pass
