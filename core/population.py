@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import List, Iterable
+from typing import List, Iterable, Self
 from individual import Individual
 import singledispatch
 
@@ -21,7 +21,7 @@ class Population:
         self.population.extend(individual_list)
 
     @singledispatch
-    def add_to_population(self, individual_list: Population):
+    def add_to_population(self, individual_list: Self):
         self.population.extend(individual_list.population)
 
     def trim_children(self, how_many_keep: int):
