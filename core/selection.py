@@ -5,7 +5,7 @@ class Selection(ABC):
     def __init__(self, target_population: int, maximize: bool):
         self.target_population = target_population
         self.maximize = maximize
-        self.allowedRepresentation = Representation()
+        self.allowedRepresentation = Representation() # TODO: Representation ENUM
 
     def select(self, population: Population) -> Population:
         selected_population = self._select(population)
