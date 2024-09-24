@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 from typing import List
 import singledispatch
 
+
 @dataclass
 class Population:
     population: List[Individual] = field(default_factory=list)
@@ -24,4 +25,3 @@ class Population:
 
     def trim_children(how_many_keep: int):
         self.population = self.population[:how_many_keep]
-        
