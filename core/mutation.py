@@ -3,9 +3,10 @@ from abc import ABC, abstractmethod
 
 
 class Mutation(ABC):
+    allowed_representation = []
+
     def __init__(self, probability: float = 0):
         self.probability = probability
-        self.allowedRepresentation = Representation()
 
     def mutate(self, population_parent: Population) -> Population:
         offspring = Population()
