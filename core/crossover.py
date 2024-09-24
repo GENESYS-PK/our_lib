@@ -1,7 +1,8 @@
 import numpy as np
+from abc import ABC, abstractmethod
 
 
-class Crossover:
+class Crossover(ABC):
     def __init__(self, how_many_individuals: int, probability: float = 0):
         self.how_many_individuals = how_many_individuals
         self.probability = probability
@@ -17,5 +18,6 @@ class Crossover:
         offspring.trim_children(self.how_many_individuals)
         return offspring
 
+    @abstractmethod
     def _cross(self, population_parent: Population) -> Population:
         pass
