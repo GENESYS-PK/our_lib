@@ -5,10 +5,10 @@ from typing import Any
 @dataclass
 class Individual:
     """
-    Klasa przechowująca dane o osobniku.
+    A class that stores data about an individual.
 
-    :param chromosome: Chromosom reprezentujący osobnika (może być dowolnego typu).
-    :param value: Wartość przystosowania dla tego osobnika, wyrażona jako liczba zmiennoprzecinkowa.
+    :param chromosome: A chromosome representing the individual (can be of any type).
+    :param value: The fitness value for this individual, expressed as a floating point number.
     """
 
     chromosome: Any
