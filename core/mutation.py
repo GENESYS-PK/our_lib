@@ -17,5 +17,5 @@ class Mutation(ABC):
         return population_parent
 
     @abstractmethod
-    def _mutate(self, individual: Individual, population: Population):
+    def _mutate(self, individual: Individual, population: Population) -> None:
         pass
