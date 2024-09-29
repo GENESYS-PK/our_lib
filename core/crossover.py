@@ -1,6 +1,6 @@
 import numpy as np
 from abc import ABC, abstractmethod
-
+from population import Population
 
 class Crossover(ABC):
     allowed_representation = []
