@@ -24,7 +24,7 @@ class Population:
         return len(self.population)
 
     @singledispatch
-    def add_to_population(self, individual: Individual):
+    def add_to_population(self, individual: Individual) -> None:
         """
         Add an individual to the population.
 
@@ -34,7 +34,7 @@ class Population:
         self.population.append(individual)
 
     @singledispatch
-    def add_to_population(self, individual_list: Iterable[Individual]):
+    def add_to_population(self, individual_list: Iterable[Individual]) -> None:
         """
         Add a list of individuals to the population.
 
@@ -44,7 +44,7 @@ class Population:
         self.population.extend(individual_list)
 
     @singledispatch
-    def add_to_population(self, individual_list: Self):
+    def add_to_population(self, individual_list: Self) -> None:
         """
         Add members of another population to the current population.
 
@@ -53,7 +53,7 @@ class Population:
         """
         self.population.extend(individual_list.population)
 
-    def trim_children(self, how_many_keep: int):
+    def trim_children(self, how_many_keep: int) -> None:
         """
         Trim excess individuals from the population.
 
