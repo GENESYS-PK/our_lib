@@ -1,7 +1,8 @@
 from typing import Type, Callable, List, Tuple, Self
-from selection import Selection
-from crossover import Crossover
-from mutation import Mutation
+from Selection import Selection
+from Crossover import Crossover
+from Mutation import Mutation
+from OperatorsPreset import OperatorsPreset
 
 
 class EvolutionBuilder:
@@ -35,6 +36,7 @@ class EvolutionBuilder:
         self.max_epoch = None
         self.maximize = None
         self.representation = None
+        self.variable_domains = None
 
     def _validate(self, var, var_type, var_name):
         """
@@ -115,10 +117,13 @@ class EvolutionBuilder:
         self.fitness_function = fitness_function
         return self
 
-    def set_population_generator(self, population_function: Callable[[int, int], List[Tuple[(int, int)]]],
-                                 population_size: int|None = None,
-                                 individual_size: int|None = None,
-                                 variable_domains: List[Tuple[(int, int)]]|None = None) -> Self:
+    def set_population_generator(
+        self,
+        population_function: Callable[[int, int], List[Tuple[(int, int)]]],
+        population_size: int | None = None,
+        individual_size: int | None = None,
+        variable_domains: List[Tuple[(int, int)]] | None = None,
+    ) -> Self:
         """
         Set the population generator for the evolution process.
 
@@ -145,3 +150,25 @@ class EvolutionBuilder:
         self._validate(population_size, int, "Population Size")
         self.population_size = population_size
         return self
+
+    def set_individual_size(self, individual_size: int) -> Self:
+        """
+        Set the individual size for the evolution process.
+        :param individual_size: The number of elements in an individual
+        :return: The EvolutionBuilder instance, allowing for method chaining.
+        """
+        self._validate(individual_size, int, "Individual Size")
+        self.individual_size = individual_size
+        return self
+
+    def set_generator_domain(self, domain: List[Tuple[int, int]]) -> Self:
+        """
+        Set the domain for generating individuals in the initial population.
+
+        :param domain: A list of tuples representing the range of values for each variable.
+        :return: The EvolutionBuilder instance, allowing for method chaining.
+        """
+        self._validate(domain, list, "Domain")
+        self.variable_domains = domain
+        return self
+
