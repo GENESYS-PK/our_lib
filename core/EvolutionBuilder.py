@@ -114,3 +114,34 @@ class EvolutionBuilder:
         self._validate(fitness_function, FitnessFunction, "Fitness Function")
         self.fitness_function = fitness_function
         return self
+
+    def set_population_generator(self, population_function: Callable[[int, int], List[Tuple[(int, int)]]],
+                                 population_size: int|None = None,
+                                 individual_size: int|None = None,
+                                 variable_domains: List[Tuple[(int, int)]]|None = None) -> Self:
+        """
+        Set the population generator for the evolution process.
+
+        :param population_function: The function responsible for generating the population.
+        :param population_size: The size of the population (optional).
+        :param individual_size: The size of an individual (optional).
+        :param variable_domains: The variable domains for generating individuals (optional).
+        :return: The EvolutionBuilder instance, allowing for method chaining.
+        """
+        self._validate(population_function, Callable, "Population Generator")
+        self.population_generator = population_function
+        self.population_size = population_size
+        self.individual_size = individual_size
+        self.variable_domains = variable_domains
+        return self
+
+    def set_population_size(self, population_size: int) -> Self:
+        """
+        Set the population size for the evolution process.
+
+        :param population_size: The number of individuals in the population.
+        :return: The EvolutionBuilder instance, allowing for method chaining.
+        """
+        self._validate(population_size, int, "Population Size")
+        self.population_size = population_size
+        return self
