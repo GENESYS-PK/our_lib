@@ -3,6 +3,8 @@ from Selection import Selection
 from Crossover import Crossover
 from Mutation import Mutation
 from OperatorsPreset import OperatorsPreset
+from Representation import Representation
+from Evolution import Evolution
 
 
 class EvolutionBuilder:
@@ -183,7 +185,9 @@ class EvolutionBuilder:
         self.jobs.append(job)
         return self
 
-    def add_event_listener(self, event_type: EventListenerType, event: Callable[EvolutionState]) -> Self:
+    def add_event_listener(
+        self, event_type: EventListenerType, event: Callable[EvolutionState]
+    ) -> Self:
         """
         Add an event listener for the evolution process.
 
@@ -227,3 +231,70 @@ class EvolutionBuilder:
         self._validate(maximize, bool, "Maximize")
         self.maximize = maximize
         return self
+
+    def set_representation(self, representation: Representation) -> Self:
+        """
+        Set the representation type for the evolution process.
+
+        :param representation: The representation to use for individuals.
+        :return: The EvolutionBuilder instance, allowing for method chaining.
+        """
+        self._validate(representation, Representation, "Representation")
+        self.representation = representation
+        return self
+
+    def _create_epoch_terminator(self, max_epoch: int) -> Callable:
+        """
+        Create a terminator based on the maximum number of epochs.
+
+        :param max_epoch: The maximum number of epochs.
+        :return: A lambda function that terminates the evolution process after the specified number of epochs.
+        """
+        return lambda state: state.epoch >= max_epoch
+
+    def create_evolution(self) -> Evolution:
+        """
+        Create an instance of the Evolution class using the provided settings.
+
+        :return: An instance of the Evolution class.
+        :raises ValueError: If required fields are missing.
+        """
+        required_fields = [
+            ("selection", self.selection),
+            ("crossover", self.crossover),
+            ("mutation", self.mutation),
+            ("fitness_function", self.fitness_function),
+            ("population_generator", self.population_generator),
+            ("population_size", self.population_size),
+            ("individual_size", self.individual_size),
+            ("representation", self.representation),
+        ]
+
+        missing_fields = [name for name, value in required_fields if value is None]
+
+        if missing_fields:
+            raise ValueError(f"Missing required fields: {', '.join(missing_fields)}")
+
+        if not self.terminator and self.max_epoch is not None:
+            self.terminator = self._create_epoch_terminator(self.max_epoch)
+
+        if not self.terminator:
+            raise ValueError("Either terminator or max_epoch must be set.")
+
+        evolution = self.evolution_reference(
+            selection=self.selection,
+            crossover=self.crossover,
+            mutation=self.mutation,
+            elitism=self.elitism,
+            fitness_function=self.fitness_function,
+            population_generator=self.population_generator,
+            events=self.events,
+            jobs=self.jobs,
+            terminator=self.terminator,
+            clamp_strategy=self.clamp_strategy,
+            population_size=self.population_size,
+            individual_size=self.individual_size,
+            maximize=self.maximize,
+            representation=self.representation,
+        )
+        return evolution
