@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from typing import List, Iterable, Self
-from individual import Individual
+from core.Individual import Individual
 import singledispatch
 
 

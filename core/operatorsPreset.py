@@ -1,7 +1,8 @@
 from dataclasses import dataclass
-from mutation import Mutation
-from crossover import Crossover
-from selection import Selection
+from Mutation import Mutation
+from Crossover import Crossover
+from Selection import Selection
+
 
 @dataclass
 class OperatorsPreset:
