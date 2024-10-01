@@ -194,3 +194,36 @@ class EvolutionBuilder:
         self._validate(event, Callable, "Event")
         self.events.append((event_type, event))
         return self
+
+    def set_terminator(self, expression: Expression) -> Self:
+        """
+        Set the terminator condition for the evolution process.
+
+        :param expression: The condition that will terminate the evolution loop.
+        :return: The EvolutionBuilder instance, allowing for method chaining.
+        """
+        self._validate(expression, Expression, "Terminator")
+        self.terminator = expression
+        return self
+
+    def set_max_epoch(self, max_epoch: int) -> Self:
+        """
+        Set the maximum number of epochs for the evolution process.
+
+        :param max_epoch: The maximum number of generations to run.
+        :return: The EvolutionBuilder instance, allowing for method chaining.
+        """
+        self._validate(max_epoch, int, "Max Epoch")
+        self.max_epoch = max_epoch
+        return self
+
+    def set_maximize(self, maximize: bool) -> Self:
+        """
+        Set whether the evolution process should maximize or minimize the fitness function.
+
+        :param maximize: True to maximize fitness, False to minimize.
+        :return: The EvolutionBuilder instance, allowing for method chaining.
+        """
+        self._validate(maximize, bool, "Maximize")
+        self.maximize = maximize
+        return self
