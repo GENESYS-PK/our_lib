@@ -172,3 +172,25 @@ class EvolutionBuilder:
         self.variable_domains = domain
         return self
 
+    def add_job(self, job: Job) -> Self:
+        """
+        Add a job to the list of jobs for the evolution process.
+
+        :param job: The job to add.
+        :return: The EvolutionBuilder instance, allowing for method chaining.
+        """
+        self._validate(job, Job, "Job")
+        self.jobs.append(job)
+        return self
+
+    def add_event_listener(self, event_type: EventListenerType, event: Callable[EvolutionState]) -> Self:
+        """
+        Add an event listener for the evolution process.
+
+        :param event_type: The type of event to listen for.
+        :param event: The function to be called when the event occurs.
+        :return: The EvolutionBuilder instance, allowing for method chaining.
+        """
+        self._validate(event, Callable, "Event")
+        self.events.append((event_type, event))
+        return self
