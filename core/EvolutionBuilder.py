@@ -5,6 +5,7 @@ from Mutation import Mutation
 from OperatorsPreset import OperatorsPreset
 from Representation import Representation
 from Evolution import Evolution
+from Expression import Expression
 
 
 class EvolutionBuilder:
