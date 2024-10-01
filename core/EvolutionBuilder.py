@@ -1,4 +1,4 @@
-from typing import Type, Callable, List, Tuple, Self
+from typing import Type, Callable, List, Tuple, Self, Any
 from Selection import Selection
 from Crossover import Crossover
 from Mutation import Mutation
@@ -6,6 +6,7 @@ from OperatorsPreset import OperatorsPreset
 from Representation import Representation
 from Evolution import Evolution
 from Expression import Expression
+import random
 
 
 class EvolutionBuilder:
@@ -41,7 +42,7 @@ class EvolutionBuilder:
         self.representation = None
         self.variable_domains = None
 
-    def _validate(self, var, var_type, var_name):
+    def _validate(self, var: Any, var_type: Any, var_name: Any):
         """
         Validate that a variable is of the expected type.
 
@@ -98,15 +99,15 @@ class EvolutionBuilder:
         self.set_mutation(preset.mutation)
         return self
 
-    def set_elitims(self, elitims: Elitism) -> Self:
+    def set_elitism(self, elitism: Elitism) -> Self:
         """
         Set the elitism strategy for the evolution process.
 
-        :param elitims: The elitism strategy to use.
+        :param elitism: The elitism strategy to use.
         :return: The EvolutionBuilder instance, allowing for method chaining.
         """
-        self._validate(elitims, Elitism, "Elitism")
-        self.elitism = elitims
+        self._validate(elitism, Elitism, "Elitism")
+        self.elitism = elitism
         return self
 
     def set_fitness_function(self, fitness_function: FitnessFunction) -> Self:
@@ -282,20 +283,19 @@ class EvolutionBuilder:
         if not self.terminator:
             raise ValueError("Either terminator or max_epoch must be set.")
 
+        # Create the evolution instance
         evolution = self.evolution_reference(
             selection=self.selection,
             crossover=self.crossover,
             mutation=self.mutation,
             elitism=self.elitism,
             fitness_function=self.fitness_function,
-            population_generator=self.population_generator,
+            population=initial_population,  # Pass the generated population
+            representation=self.representation,
             events=self.events,
             jobs=self.jobs,
             terminator=self.terminator,
             clamp_strategy=self.clamp_strategy,
-            population_size=self.population_size,
-            individual_size=self.individual_size,
             maximize=self.maximize,
-            representation=self.representation,
         )
         return evolution
