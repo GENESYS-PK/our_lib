@@ -1,5 +1,5 @@
 import numpy as np
-from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod #
 from core import Population, Mutation
 from core.Individual import Individual
 import random
