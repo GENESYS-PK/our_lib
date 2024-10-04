@@ -42,16 +42,18 @@ class Evolution:
         self.events = events
 
     def set_selection(self, selection: Selection) -> Self:
-        pass
+        self.selection = selection
 
     def set_crossover(self, crossover: Crossover) -> Self:
-        pass
+        self.crossover = crossover
 
     def set_mutation(self, mutation: Mutation) -> Self:
-        pass
+        self.mutation = mutation
 
     def use_preset(self, preset: OperatorsPreset) -> Self:
-        pass
+        self.selection = preset.selection
+        self.crossover = preset.crossover
+        self.mutation = preset.mutation
 
     def add_event_listener(
         self, event_type: EventListenerType, event: Callable[EvolutionState]
