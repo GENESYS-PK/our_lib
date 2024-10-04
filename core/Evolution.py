@@ -29,7 +29,17 @@ class Evolution:
         maximize: bool,
         events: Tuple[List[Callable[[EvolutionState], None]], ...],
     ):
-        pass
+        self.mutation = mutation
+        self.selection = selection
+        self.crossover = crossover
+        self.elitism = elitism
+        self.fitness_function = fitness_function
+        self.job_queue = job_queue
+        self.init_population = init_population
+        self.population_size = population_size
+        self.terminator = terminator
+        self.maximize = maximize
+        self.events = events
 
     def set_selection(self, selection: Selection) -> Self:
         pass
