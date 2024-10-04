@@ -20,7 +20,7 @@ class Evolution:
         mutation: Mutation,
         selection: Selection,
         crossover: Crossover,
-        elitims: Elitism,
+        elitism: Elitism,
         fitness_function: FitnessFunction,
         job_queue: List[Job],
         init_population: Population,
@@ -35,43 +35,40 @@ class Evolution:
         self.elitism = elitism
         self.fitness_function = fitness_function
         self.job_queue = job_queue
-        self.init_population = init_population
-        self.population_size = population_size
         self.terminator = terminator
-        self.maximize = maximize
+        self.evolution_state = EvolutionState()
+        self.terminate_loop: bool = False
         self.events = events
+        self.representation = []
+        self.population = init_population
+        self.population_size = population_size
+        self.maximize = maximize
 
     def set_selection(self, selection: Selection) -> Self:
         self.selection = selection
-
+        return self
+    
     def set_crossover(self, crossover: Crossover) -> Self:
         self.crossover = crossover
+        return self
 
     def set_mutation(self, mutation: Mutation) -> Self:
         self.mutation = mutation
+        return self
 
     def use_preset(self, preset: OperatorsPreset) -> Self:
         self.selection = preset.selection
         self.crossover = preset.crossover
         self.mutation = preset.mutation
-
-    def add_event_listener(
-        self, event_type: EventListenerType, event: Callable[EvolutionState]
-    ) -> Self:
-        pass
-
-    def remove_event_listener(
-        self, event_type: EventListenerType, event: Callable[EvolutionState]
-    ) -> Self:
-        pass
+        return self
 
     def run(self) -> None:
         pass
-
+    
     def loop(self) -> None:
         pass
 
-    def get_evolution_state() -> EvolutionState:
+    def get_evolution_state(self) -> EvolutionState:
         pass
 
     def crossover(self) -> None:
@@ -84,10 +81,4 @@ class Evolution:
         pass
 
     def elitism(self) -> None:
-        pass
-
-    def stepX(self) -> None:
-        pass
-
-    def hook(self, event_type: EventListenerType) -> None:
         pass
