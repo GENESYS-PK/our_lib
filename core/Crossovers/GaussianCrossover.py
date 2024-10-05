@@ -40,7 +40,7 @@ class GaussCrossover(Crossover):
         offspring.trim_children(self.how_many_individuals)
         return offspring
 
-    def _cross(self, population_parent: Population) -> list:
+    def _cross(self, population_parent: Population) -> Population:
         """
         Perform Gaussian crossover between two individuals from the parent population.
 
