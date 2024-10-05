@@ -1,5 +1,5 @@
 import numpy as np
-from abc import ABC, abstractmethod #
+from abc import ABC, abstractmethod
 from core import Population, Mutation
 from core.Individual import Individual
 import random
@@ -31,18 +31,19 @@ class TimeVariantMutation(Mutation):
         :param population: The population containing the individual.
         :returns: None
         """
-        individual.genome = self.time_variant_mutation(individual.genome)
+        self.time_variant_mutation(individual.chromosome)
 
-    def time_variant_mutation(self, genome):
+    def time_variant_mutation(self, chromosome):
         """
-        Apply time-variant mutation on the genome of an individual.
+        Apply time-variant mutation on the chromosome of an individual.
 
-        :param genome: List of gene values representing an individual's genome.
-        :returns: Mutated genome.
+        :param chromosome: List of gene values representing an individual's chromosome.
+        :returns: None
         """
-        for j in range(len(genome)):
+        for j in range(len(chromosome)):
             r = np.random.uniform(0, 1)
             sigma = 1 - (r ** (1 - self.t / self.M)) ** self.ypsilon
             a = np.random.normal(0, sigma ** 2)
-            genome[self.k] = genome[self.k] + a
-        return genome
+            chromosome[self.k] = chromosome[self.k] + a
+
+        return None

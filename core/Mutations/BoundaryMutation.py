@@ -1,5 +1,5 @@
 import numpy as np
-from abc import ABC, abstractmethod #
+from abc import ABC, abstractmethod
 from core import Population, Mutation
 from core.Individual import Individual
 import random
@@ -26,20 +26,21 @@ class BoundaryMutation(Mutation):
         :param population: The population containing the individual.
         :returns: None
         """
-        individual.genome = self.boundary_mutation(individual.genome)
+        self.boundary_mutation(individual.chromosome)
 
-    def boundary_mutation(self, genome):
+    def boundary_mutation(self, chromosome):
         """
-        Apply boundary mutation on the genome of an individual.
+        Apply boundary mutation on the chromosome of an individual.
 
-        :param genome: List of gene values representing an individual's genome.
-        :returns: Mutated genome.
+        :param chromosome: List of gene values representing an individual's chromosome.
+        :returns: None
         """
-        for i in range(len(genome)):
+        for i in range(len(chromosome)):
             if np.random.uniform(0, 1) <= self.pbm:
                 # Mutate gene to either lower or upper boundary
                 if np.random.uniform(0, 1) < 0.5:
-                    genome[i] = self.boundaries[i][0]
+                    chromosome[i] = self.boundaries[i][0]
                 else:
-                    genome[i] = self.boundaries[i][1]
-        return genome
+                    chromosome[i] = self.boundaries[i][1]
+
+        return None

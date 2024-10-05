@@ -1,9 +1,11 @@
 import numpy as np
-from abc import ABC, abstractmethod #
+from abc import ABC, abstractmethod
 from core import Population, Mutation
 from core.Individual import Individual
 import random
 import math
+
+
 class SphereMutation(Mutation):
     """
     Implements sphere mutation where gene values are adjusted based on random selection of two genes.
@@ -23,20 +25,23 @@ class SphereMutation(Mutation):
         :param population: The population containing the individual.
         :returns: None
         """
-        individual.genome = self.sphere_mutation(individual.genome)
+        self.sphere_mutation(individual.chromosome)
 
-    def sphere_mutation(self, genome):
+    def sphere_mutation(self, chromosome):
         """
-        Apply sphere mutation on the genome of an individual.
+        Apply sphere mutation on the chromosome of an individual.
 
-        :param genome: List of gene values representing an individual's genome.
-        :returns: Mutated genome.
+        :param chromosome: List of gene values representing an individual's chromosome.
+        :returns: None
         """
         if np.random.uniform(0, 1) <= self.psm:
             # Randomly select two genes to mutate
-            k, q = random.sample(range(len(genome)), 2)
+            k, q = random.sample(range(len(chromosome)), 2)
             a = np.random.uniform(0, 1)
-            B = math.sqrt((genome[k] / genome[q]) ** 2 * (1 - a ** 2) + 1)
-            genome[k] = a * genome[k]
-            genome[q] = B * genome[q]
-        return genome
+            B = math.sqrt((chromosome[k] / chromosome[q]) ** 2 * (1 - a ** 2) + 1)
+
+            # Apply the mutation
+            chromosome[k] = a * chromosome[k]
+            chromosome[q] = B * chromosome[q]
+
+        return None
