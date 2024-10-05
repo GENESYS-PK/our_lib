@@ -15,6 +15,22 @@ class GaussCrossover(Crossover):
         self.xp = xp
         self.xk = xk
 
+    def cross(self, population_parent: Population) -> Population:
+        """
+        Perform the crossover operations for the entire population.
+
+        :param population_parent: The population to perform the crossover operation on.
+        :returns: The offspring population.
+        """
+        offspring = Population()
+
+        while offspring.population_size < population_parent.population_size:
+            if np.random.rand() < self.probability:
+                offspring.add_to_population(self._cross(population_parent))
+
+        offspring.trim_children(self.how_many_individuals)
+        return offspring
+
     def _cross(self, population_parent: Population) -> Population:
         """
         Perform Gaussian crossover between two individuals from the parent population.
