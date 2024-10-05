@@ -28,7 +28,7 @@ class FitnessFunction:
         self.n_dim = n_dim
         self.clamp_strategy = clamp_strategy
 
-    def calculate_individual_value(individual: Individual) -> float:
+    def calculate_individual_value(self, individual: Individual) -> float:
         """
         Method for a single individual's evaluation.
 
@@ -38,7 +38,7 @@ class FitnessFunction:
         """
         return self.fitness_function(individual.chromosome)
 
-    def eval_population(population: Population) -> None:
+    def eval_population(self, population: Population) -> None:
         """
         Evaluate entire population.
 
@@ -49,7 +49,7 @@ class FitnessFunction:
         for i in population.population:
             i.value = self.fitness_function(i.chromosome)
 
-    def get_eval_list(population: Population) -> np.ndarray[float]:
+    def get_eval_list(self, population: Population) -> np.ndarray[float]:
         """
         Evaluate entire population.
 
@@ -63,7 +63,7 @@ class FitnessFunction:
             ret[i[0]] = self.fitness_function(i[1].chromosome)
         return ret
     
-    def clamp_population_to_domain(population: Population) -> None:
+    def clamp_population_to_domain(self, population: Population) -> None:
         """
         Force every individual in population into domain given by *variable_domains*.
 
