@@ -16,7 +16,7 @@ class Expression(Condition):
         Initialize the Expression class with an empty expression list.
         """
         super().__init__()
-        self.expression_list: List[Union[Condition, Concatenator]] = []
+        self.expression_list: List[Condition|Concatenator] = []
 
     def evaluate(self, evolution) -> bool:
         """

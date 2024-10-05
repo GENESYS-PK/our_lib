@@ -6,7 +6,6 @@ from Selection import Selection
 
 @dataclass
 class OperatorsPreset:
-    selection: Selection = Selection(1,True)
-    crossover: Crossover = Crossover(1)
-    mutation: Mutation = Mutation()
-
+    selection: Selection|None = None
+    crossover: Crossover|None = None
+    mutation: Mutation|None = None
