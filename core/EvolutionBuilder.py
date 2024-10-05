@@ -6,6 +6,8 @@ from OperatorsPreset import OperatorsPreset
 from Representation import Representation
 from Evolution import Evolution
 from Expression import Expression
+from FitnessFunction import FitnessFunction
+from EventListenerType import EventListenerType
 import random
 
 
@@ -158,7 +160,8 @@ class EvolutionBuilder:
     def set_individual_size(self, individual_size: int) -> Self:
         """
         Set the individual size for the evolution process.
-        :param individual_size: The number of elements in an individual
+
+        :param individual_size: The number of elements in an individual.
         :return: The EvolutionBuilder instance, allowing for method chaining.
         """
         self._validate(individual_size, int, "Individual Size")
@@ -188,7 +191,7 @@ class EvolutionBuilder:
         return self
 
     def add_event_listener(
-        self, event_type: EventListenerType, event: Callable[EvolutionState]
+        self, event_type: EventListenerType, event: Callable
     ) -> Self:
         """
         Add an event listener for the evolution process.
@@ -259,7 +262,7 @@ class EvolutionBuilder:
         Create an instance of the Evolution class using the provided settings.
 
         :return: An instance of the Evolution class.
-        :raises ValueError: If required fields are missing.
+        :raises ValueError: If required fields are missing or terminator conditions are not set.
         """
         required_fields = [
             ("selection", self.selection),
@@ -277,11 +280,17 @@ class EvolutionBuilder:
         if missing_fields:
             raise ValueError(f"Missing required fields: {', '.join(missing_fields)}")
 
+        # Handle the terminator logic
         if not self.terminator and self.max_epoch is not None:
             self.terminator = self._create_epoch_terminator(self.max_epoch)
 
         if not self.terminator:
             raise ValueError("Either terminator or max_epoch must be set.")
+
+        # Generate initial population
+        initial_population = self.population_generator(
+            self.population_size, self.individual_size
+        )
 
         # Create the evolution instance
         evolution = self.evolution_reference(
@@ -290,7 +299,7 @@ class EvolutionBuilder:
             mutation=self.mutation,
             elitism=self.elitism,
             fitness_function=self.fitness_function,
-            population=initial_population,  # Pass the generated population
+            population=initial_population,
             representation=self.representation,
             events=self.events,
             jobs=self.jobs,
