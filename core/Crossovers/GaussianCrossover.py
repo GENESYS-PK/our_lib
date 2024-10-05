@@ -40,21 +40,23 @@ class GaussCrossover(Crossover):
         offspring.trim_children(self.how_many_individuals)
         return offspring
 
-    def _cross(self, population_parent: Population) -> Population:
+    def _cross(self, population_parent: Population) -> list:
         """
         Perform Gaussian crossover between two individuals from the parent population.
 
         :param population_parent: The population to perform the crossover operation on.
-        :returns: The offspring.
+        :returns: A list containing the offspring.
         """
         parent_1, parent_2 = population_parent.select_two()
 
         size = min(len(parent_1), len(parent_2))
         offspring1 = []
         offspring2 = []
+
         for i in range(size):
             distance = math.fabs(parent_1[i] - parent_2[i])
             alpha = random.random()
+
             if random.uniform(0, 1) <= 0.5:
                 new_val1 = parent_1[i] + alpha * (distance / 3)
                 new_val2 = parent_2[i] + alpha * (distance / 3)
@@ -71,8 +73,9 @@ class GaussCrossover(Crossover):
             offspring1.append(new_val1)
             offspring2.append(new_val2)
 
-        # Create new offspring population
-        offspring = Population()
-        offspring.add_to_population([offspring1, offspring2])
+
+        offspring = []
+        offspring.append(offspring1)
+        offspring.append(offspring2)
 
         return offspring
