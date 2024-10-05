@@ -12,7 +12,7 @@ class BlendCrossoverAlfa(Crossover):
 
     :param how_many_individuals: The number of individuals to create in the offspring.
     :param probability: The probability of performing the crossover operation.
-    :param alfa: The parameter used for blending two genes, must be positive, preferably close closer to 0 and less than 1.
+    :param alfa: The parameter used for blending two genes, must be positive, preferably closer to 0 and less than 1.
     :raises ValueError: If the alfa parameter is not positive or population size is less than 2.
 
     allowed_representation: [Representation.REAL]
