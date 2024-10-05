@@ -1,4 +1,4 @@
-from typing import Type, Callable, List, Tuple, Self, Any
+from typing import Callable, List, Tuple, Self, Any
 from Selection import Selection
 from Crossover import Crossover
 from Mutation import Mutation
@@ -8,7 +8,11 @@ from Evolution import Evolution
 from Expression import Expression
 from FitnessFunction import FitnessFunction
 from EventListenerType import EventListenerType
-import random
+from EvolutionState import EvolutionState
+from Job import Job
+from Elitism import Elitism
+from ClampStrategy import ClampStrategy
+from Population import Population
 
 
 class EvolutionBuilder:
@@ -26,22 +30,26 @@ class EvolutionBuilder:
 
         :param evolution_reference: A reference to the Evolution class (not an instance).
         """
-        self.evolution_reference = evolution_reference
-        self.selection = None
-        self.crossover = None
-        self.mutation = None
-        self.elitism = None
-        self.fitness_function = None
-        self.population_generator = None
-        self.events = []
-        self.jobs = []
-        self.terminator = None
-        self.clamp_strategy = None
-        self.population_size = None
-        self.individual_size = None
-        self.max_epoch = None
-        self.maximize = None
-        self.representation = None
+        self.evolution_reference: Evolution = evolution_reference
+        self.selection: Selection | None = None
+        self.crossover: Crossover | None = None
+        self.mutation: Mutation | None = None
+        self.elitism: Elitism | None = None
+        self.fitness_function: FitnessFunction | None = None
+        self.population_generator: (
+            Callable[[int, int, List[Tuple[int, int]]], Population] | None
+        ) = None
+        self.events: List[
+            Tuple[EventListenerType, List[Callable[[EvolutionState], None]]]
+        ] = []
+        self.jobs: List[Job] = []
+        self.terminator: Expression | None = None
+        self.clamp_strategy: ClampStrategy | None = None
+        self.population_size: int = 0
+        self.individual_size: int = 0
+        self.max_epoch: int = 0
+        self.maximize: bool = False
+        self.representation: Representation | None = None
         self.variable_domains = None
 
     def _validate(self, var: Any, var_type: Any, var_name: Any):
@@ -125,10 +133,10 @@ class EvolutionBuilder:
 
     def set_population_generator(
         self,
-        population_function: Callable[[int, int], List[Tuple[(int, int)]]],
+        population_function: Callable[[int, int, List[Tuple[int, int]]], Population],
         population_size: int | None = None,
         individual_size: int | None = None,
-        variable_domains: List[Tuple[(int, int)]] | None = None,
+        variable_domains: List[Tuple[int, int]] | None = None,
     ) -> Self:
         """
         Set the population generator for the evolution process.
@@ -141,9 +149,12 @@ class EvolutionBuilder:
         """
         self._validate(population_function, Callable, "Population Generator")
         self.population_generator = population_function
-        self.population_size = population_size
-        self.individual_size = individual_size
-        self.variable_domains = variable_domains
+        if population_size is not None:
+            self.set_population_size(population_size)
+        if individual_size is not None:
+            self.set_individual_size(individual_size)
+        if variable_domains is not None:
+            self.set_generator_domain(variable_domains)
         return self
 
     def set_population_size(self, population_size: int) -> Self:
@@ -191,7 +202,7 @@ class EvolutionBuilder:
         return self
 
     def add_event_listener(
-        self, event_type: EventListenerType, event: Callable
+        self, event_type: EventListenerType, event: Callable[[EvolutionState], None]
     ) -> Self:
         """
         Add an event listener for the evolution process.
@@ -288,23 +299,22 @@ class EvolutionBuilder:
             raise ValueError("Either terminator or max_epoch must be set.")
 
         # Generate initial population
-        initial_population = self.population_generator(
-            self.population_size, self.individual_size
+        init_population = self.population_generator(
+            self.population_size, self.individual_size, self.variable_domains
         )
 
         # Create the evolution instance
         evolution = self.evolution_reference(
+            mutation=self.mutation,
             selection=self.selection,
             crossover=self.crossover,
-            mutation=self.mutation,
             elitism=self.elitism,
             fitness_function=self.fitness_function,
-            population=initial_population,
-            representation=self.representation,
-            events=self.events,
-            jobs=self.jobs,
+            job_queue=job_queue,
+            init_population=init_population,
+            population_size=self.population_size,
             terminator=self.terminator,
-            clamp_strategy=self.clamp_strategy,
             maximize=self.maximize,
+            events=self.events,
         )
         return evolution
