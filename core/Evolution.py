@@ -40,7 +40,7 @@ class Evolution:
         self.terminate_loop: bool = False
         self.events = events
         self.representation = []
-        self.population = init_population
+        self.init_population = init_population
         self.population_size = population_size
         self.maximize = maximize
 
@@ -63,22 +63,38 @@ class Evolution:
         return self
 
     def run(self) -> None:
-        pass
+        self.prepare_evolution_state()
+        while not self.terminate_loop:
+            self.loop()
+            # terminator.evaluate(self)
     
     def loop(self) -> None:
-        pass
+        self.step_selection()
+        self.step_crossover()
+        self.step_mutation()    
 
     def get_evolution_state(self) -> EvolutionState:
-        pass
+        return self.evolution_state
+    
+    def prepare_evolution_state(self) -> None:
+        self.evolution_state.current_population = self.init_population
+        self.evolution_state.maximize = self.maximize
+        self.evolution_state.population_size = self.population_size
 
-    def crossover(self) -> None:
-        pass
+    def perform_crossover(self) -> None:
+        self.evolution_state.current_population = self.crossover.cross(self.evolution_state.current_population)
 
-    def selection(self) -> None:
-        pass
+    def perform_selection(self) -> None:
+        self.evolution_state.current_population = self.selection.select(self.evolution_state.current_population)
 
-    def mutation(self) -> None:
-        pass
+    def perform_mutation(self) -> None:
+        self.evolution_state.current_population = self.mutation.mutate(self.evolution_state.current_population)
 
-    def elitism(self) -> None:
-        pass
+    def step_selection(self) -> None:
+        self.perform_selection()
+
+    def step_crossover(self) -> None:
+        self.perform_crossover()
+
+    def step_mutation(self) -> None:
+        self.perform_mutation()
