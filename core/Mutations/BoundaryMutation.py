@@ -8,28 +8,28 @@ import random
 class BoundaryMutation(Mutation):
     def __init__(self, probability: float, pbm: float, boundaries: list):
         """
-               Constructor for the BoundaryMutation class.
+        Constructor for the BoundaryMutation class.
 
-               Parameters:
-                   probability (float): Probability of mutation (between 0 and 1).
-                   pbm (float): The probability of mutating each gene within an individual.
-                   boundaries (list): The allowed boundaries for each gene.
-               """
+        Parameters:
+            probability (float): Probability of mutation (between 0 and 1).
+            pbm (float): The probability of mutating each gene within an individual.
+            boundaries (list): The allowed boundaries for each gene.
+        """
         super().__init__(probability)
         self.pbm = pbm  # Probability of boundary mutation for each gene
         self.boundaries = boundaries  # List of [min, max] boundaries for each gene
 
     def _mutate(self, individual: Individual, population: Population) -> None:
         """
-                Applies Boundary Mutation to the individual's chromosome.
+        Applies Boundary Mutation to the individual's chromosome.
 
-                Parameters:
-                    individual (Individual): A single individual to mutate.
-                    population (Population): The population containing individuals.
+        Parameters:
+            individual (Individual): A single individual to mutate.
+            population (Population): The population containing individuals.
 
-                Returns:
-                    None: The population with mutated individuals.
-                """
+        Returns:
+            None: The population with mutated individuals.
+        """
         self.boundary_mutation(individual.chromosome)
 
     def boundary_mutation(self, chromosome):

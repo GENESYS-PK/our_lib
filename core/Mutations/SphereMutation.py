@@ -9,12 +9,12 @@ import math
 class SphereMutation(Mutation):
     def __init__(self, probability: float, psm: float):
         """
-               Constructor for the Sphere Mutation class.
+        Constructor for the Sphere Mutation class.
 
-               Parameters:
-                   probability (float): Probability of mutation (between 0 and 1).
-                   psm (float): The probability of mutating each individual in the population.
-               """
+        Parameters:
+            probability (float): Probability of mutation (between 0 and 1).
+            psm (float): The probability of mutating each individual in the population.
+        """
         super().__init__(probability)
         self.psm = psm  # Probability of sphere mutation for each individual
 

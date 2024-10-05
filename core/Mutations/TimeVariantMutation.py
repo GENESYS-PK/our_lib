@@ -9,15 +9,15 @@ import math
 class TimeVariantMutation(Mutation):
     def __init__(self, probability: float, ypsilon: float, t: int, M: int, k: int):
         """
-             Constructor for the Time Variant Mutation class.
+        Constructor for the Time Variant Mutation class.
 
-             Parameters:
-                 probability (float): Probability of mutation (between 0 and 1).
-                 ypsilon (float): A constant that controls the strength of the mutation.
-                 t: Current generation.
-                 M: Maximum number of generations.
-                 k: The index of the gene to mutate.
-             """
+        Parameters:
+            probability (float): Probability of mutation (between 0 and 1).
+            ypsilon (float): A constant that controls the strength of the mutation.
+            t: Current generation.
+            M: Maximum number of generations.
+            k: The index of the gene to mutate.
+        """
         super().__init__(probability)
         self.ypsilon = ypsilon  # Controls mutation strength
         self.t = t  # Current generation
@@ -26,15 +26,15 @@ class TimeVariantMutation(Mutation):
 
     def _mutate(self, individual: Individual, population: Population) -> None:
         """
-               Applies Time Variant Mutation to the individual's chromosome.
+        Applies Time Variant Mutation to the individual's chromosome.
 
-               Parameters:
-                   individual (Individual): A single individual to mutate.
-                   population (Population): The population containing individuals.
+        Parameters:
+            individual (Individual): A single individual to mutate.
+            population (Population): The population containing individuals.
 
-               Returns:
-                   None: The population with mutated individuals.
-               """
+        Returns:
+            None: The population with mutated individuals.
+        """
         self.time_variant_mutation(individual.chromosome)
 
     def time_variant_mutation(self, chromosome):
