@@ -35,12 +35,12 @@ class SphereMutation(Mutation):
         :returns: None
         """
         if np.random.uniform(0, 1) <= self.psm:
-            # Randomly select two genes to mutate
+
             k, q = random.sample(range(len(chromosome)), 2)
             a = np.random.uniform(0, 1)
             B = math.sqrt((chromosome[k] / chromosome[q]) ** 2 * (1 - a ** 2) + 1)
 
-            # Apply the mutation
+
             chromosome[k] = a * chromosome[k]
             chromosome[q] = B * chromosome[q]
 
