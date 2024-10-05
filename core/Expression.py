@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import List, Self
 from Condition import Condition
 from Concatenator import Concatenator
 
@@ -18,36 +18,42 @@ class Expression(Condition):
         super().__init__()
         self.expression_list: List[Condition|Concatenator] = []
 
-    def evaluate(self, evolution) -> bool:
+    def evaluate(self, evolution: Self) -> bool:
         """
         Evaluate the logical expression based on the provided evolution instance.
 
-        The method parses the expression list and applies the logical operators
-        (AND/OR) between the conditions.
-
         :param evolution: The evolution process instance to evaluate.
-        :return: A boolean representing the result of the logical expression.
-        :raises ValueError: If the expression list is empty.
+        :return: A boolean indicating the result of the logical expression.
         """
         if not self.expression_list:
-            raise ValueError("Expression list is empty.")
+            raise ValueError("The expression list is empty.")
 
-        # Initialize with the evaluation of the first condition
-        result = self.expression_list[0].evaluate(evolution)
+        result = None
+        current_condition = None
+        current_concatenator = None
 
-        # Parse through the expression list
-        for i in range(1, len(self.expression_list), 2):
-            concatenator = self.expression_list[i]
-            next_condition = self.expression_list[i + 1]
+        for element in self.expression_list:
+            if isinstance(element, Condition):
+                # Evaluate the current condition
+                current_result = element.evaluate(evolution)
 
-            if concatenator == Concatenator.AND:
-                result = result and next_condition.evaluate(evolution)
-            elif concatenator == Concatenator.OR:
-                result = result or next_condition.evaluate(evolution)
+                if result is None:
+                    result = current_result
+                else:
+                    if current_concatenator == Concatenator.AND:
+                        result = result and current_result
+                    elif current_concatenator == Concatenator.OR:
+                        result = result or current_result
+
+                current_condition = element
+
+            elif isinstance(element, Concatenator):
+                # Set the current concatenator
+                current_concatenator = element
 
         return result
 
-    def begin(self, condition: Condition) -> 'Expression':
+    def begin(self, condition: Condition) -> Self:
         """
         Begin the logical expression with the first condition.
 
@@ -61,7 +67,7 @@ class Expression(Condition):
         self.expression_list.append(condition)
         return self
 
-    def and_(self, condition: Condition) -> 'Expression':
+    def and_(self, condition: Condition) -> Self:
         """
         Add a condition to the expression with an AND operator.
 
@@ -76,7 +82,7 @@ class Expression(Condition):
         self.expression_list.append(condition)
         return self
 
-    def or_(self, condition: Condition) -> 'Expression':
+    def or_(self, condition: Condition) -> Self:
         """
         Add a condition to the expression with an OR operator.
 
