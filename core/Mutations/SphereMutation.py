@@ -7,33 +7,31 @@ import math
 
 
 class SphereMutation(Mutation):
-    """
-    Implements sphere mutation where gene values are adjusted based on random selection of two genes.
-
-    :param psm: The probability of mutating each individual in the population.
-    """
-
     def __init__(self, probability: float, psm: float):
+        """
+               Constructor for the Sphere Mutation class.
+
+               Parameters:
+                   probability (float): Probability of mutation (between 0 and 1).
+                   psm (float): The probability of mutating each individual in the population.
+               """
         super().__init__(probability)
         self.psm = psm  # Probability of sphere mutation for each individual
 
     def _mutate(self, individual: Individual, population: Population) -> None:
         """
-        Perform sphere mutation on an individual.
+        Applies Sphere Mutation to the individual's chromosome.
 
-        :param individual: The individual to mutate.
-        :param population: The population containing the individual.
-        :returns: None
+        Parameters:
+            individual (Individual): A single individual to mutate.
+            population (Population): The population containing individuals.
+
+        Returns:
+            None: The population with mutated individuals.
         """
         self.sphere_mutation(individual.chromosome)
 
     def sphere_mutation(self, chromosome):
-        """
-        Apply sphere mutation on the chromosome of an individual.
-
-        :param chromosome: List of gene values representing an individual's chromosome.
-        :returns: None
-        """
         if np.random.uniform(0, 1) <= self.psm:
 
             k, q = random.sample(range(len(chromosome)), 2)
