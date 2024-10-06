@@ -3,9 +3,9 @@ import random
 from core import Crossover, Individual, Population
 
 
-class ParabolicCrossover2(Crossover):
+class FitnessBasedParabolicCrossover(Crossover):
     """
-    Implements Parabolic Crossover 2 method in which offspring is a vertex of parabola.
+    Implements Fitness-Based Parabolic Crossover method in which offspring is a vertex of parabola.
 
     :param how_many_individuals: The number of individuals to create in the offspring.
     :param probability: The probability of performing the crossover operation.
@@ -16,7 +16,6 @@ class ParabolicCrossover2(Crossover):
 
     def __init__(self, how_many_individuals: int, fittness_function: callable, probability: float = 0):
         super().__init__(how_many_individuals, probability)
-        self.how_many_individuals = how_many_individuals
         self.fittness_function = fittness_function
 
     def cross(self, population_parent: Population) -> Population:
