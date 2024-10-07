@@ -1,5 +1,6 @@
 import numpy as np
 import math
+import random
 
 from core import Crossover, Population
 from core.Individual import Individual
@@ -38,6 +39,11 @@ class GeometricalCrossover1(Crossover):
 
         while individual_index1 == individual_index2:
             individual_index2 = np.random.randint(population_parent.population_size)
+
+        # not sure if this approach is right
+        chance_crossover = round(random.uniform(0, 1), 2)
+        if self.probability < chance_crossover <= 1:
+            return Population()
 
         chromosome_size = len(population_parent.population[individual_index1].chromosome)
         child_chromosome = np.zeros(chromosome_size)

@@ -44,6 +44,11 @@ class GeometricalCrossover1(Crossover):
         individuals_indices = [i for i in range(population_parent.population_size)]
         drafted_individuals = random.sample(individuals_indices, self.k)
 
+        # not sure if this approach is right
+        chance_crossover = round(random.uniform(0, 1), 2)
+        if self.probability < chance_crossover <= 1:
+            return Population()
+
         # creating alfa array
         floats = [random.random() for _ in range(len(drafted_individuals))]
         sum_floats = sum(floats)
