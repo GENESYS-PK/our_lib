@@ -28,30 +28,37 @@ class Expression(Condition):
         if not self.expression_list:
             raise ValueError("The expression list is empty.")
 
-        result = None
-        current_condition = None
+        # Step 1: Evaluate all AND operations first
+        and_results = []
+        current_result = None
         current_concatenator = None
 
         for element in self.expression_list:
             if isinstance(element, Condition):
-                # Evaluate the current condition
-                current_result = element.evaluate(evolution)
+                condition_result = element.evaluate(evolution)
 
-                if result is None:
-                    result = current_result
-                else:
-                    if current_concatenator == Concatenator.AND:
-                        result = result and current_result
-                    elif current_concatenator == Concatenator.OR:
-                        result = result or current_result
-
-                current_condition = element
+                if current_result is None:
+                    current_result = condition_result
+                elif current_concatenator == Concatenator.AND:
+                    current_result = current_result and condition_result
+                elif current_concatenator == Concatenator.OR:
+                    # If OR encountered, store the current result and start a new AND evaluation
+                    and_results.append(current_result)
+                    current_result = condition_result
 
             elif isinstance(element, Concatenator):
-                # Set the current concatenator
                 current_concatenator = element
 
-        return result
+        # Append the final result after last condition
+        if current_result is not None:
+            and_results.append(current_result)
+
+        # Step 2: Evaluate the OR on the results of AND evaluations
+        final_result = and_results[0]
+        for res in and_results[1:]:
+            final_result = final_result or res
+
+        return final_result
 
     def begin(self, condition: Condition) -> Self:
         """
