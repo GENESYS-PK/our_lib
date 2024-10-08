@@ -3,46 +3,54 @@ from core import Mutation, Individual, Population
 
 
 class DebGoyalMutation(Mutation):
-    def __init__(self, probability: float, n: int, delta_max: float):
+    def __init__(self, n: int, delta_max: float, probability: float = 0):
         """
-        Constructor of the DebGoyalMutation class.
+        Constructor for the Deb & Goyal Mutation (DGM) class.
 
-        Parameters:
-            probability (float): Probability of mutation (between 0 and 1).
-            n (int): Distribution index for mutation.
-            delta_max (float): Maximum allowed perturbation.
+        :param probability: Probability of mutation (float between 0 and 1).
+        :param n: Distribution index for mutation.
+        :param delta_max: Maximum allowed perturbation.
+        :raises ValueError: If the distribution index is less than 1.
         """
         super().__init__(probability)
+        if int(n) < 1:
+            raise ValueError("The distribution index must be at least 1 to perform the DebGoyalMutation operation.")
         self.n = n
         self.delta_max = delta_max
 
-    def _mutate(self, individual: Individual, population: Population) -> Population:
+    def mutate(self, population_parent: Population) -> Population:
+        """
+        Perform the Deb & Goyal Mutation operations for the entire population.
+
+        :param population_parent: The population to perform the mutation operation on.
+        :returns: The mutated population.
+        """
+        for individual in population_parent.population:
+            self._mutate(individual, population_parent)
+
+        return population_parent
+
+    def _mutate(self, individual: Individual, population: Population) -> None:
         """
         Applies Deb & Goyal mutation to the individual's chromosome.
 
-        Parameters:
-            individual (Individual): A single individual to mutate.
-            population (Population): The population containing individuals.
-
-        Returns:
-            Population: The population with mutated individuals.
+        :param individual: A single individual to mutate.
+        :param population: The population containing individuals.
+        :returns: None.
         """
-        num_offspring = len(population)
+        chromosome = individual.chromosome
+        if self.n > len(chromosome):
+            self.n = len(chromosome)
 
-        for j in range(num_offspring):
-            chromosome = population[j].chromosome
+        for i in range(self.n):
+            if np.random.uniform(0, 1) <= self.probability:
+                u = np.random.uniform(0, 1)
 
-            for i in range(self.n):
-                if np.random.uniform(0, 1) <= self.probability:
-                    u = np.random.uniform(0, 1)
+                if u < 0.5:
+                    delta = np.power(2 * u, 1 / (self.n + 1)) - 1
+                else:
+                    delta = 1 - np.power(2 * (1 - u), 1 / (self.n + 1))
 
-                    if u < 0.5:
-                        delta = np.power(2 * u, 1 / (self.n + 1)) - 1
-                    else:
-                        delta = 1 - np.power(2 * (1 - u), 1 / (self.n + 1))
+                chromosome[i] += delta * self.delta_max
 
-                    chromosome[i] += delta * self.delta_max
-
-            population[j].chromosome = chromosome
-
-        return population
+        individual.chromosome = chromosome
