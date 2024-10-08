@@ -10,7 +10,7 @@ from core.Representation import Representation
 
 class GeometricalCrossover1(Crossover):
     """
-    A class that implements Geometrical Crossover version 1 (Algorytmy genetyczne : kompendium. T. 1 strona 227)
+    A class that implements Geometrical Crossover version 1 (Algorytmy genetyczne: kompendium. T. 1 strona 227)
 
     :param how_many_individuals: The number of individuals to create in the offspring.
     :param probability: The probability of performing the crossover operation.
