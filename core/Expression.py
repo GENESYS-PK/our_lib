@@ -1,4 +1,5 @@
-from typing import List, Self
+from typing import Self
+from abc.collections import Sequence
 from Condition import Condition
 from Concatenator import Concatenator
 
@@ -16,7 +17,7 @@ class Expression(Condition):
         Initialize the Expression class with an empty expression list.
         """
         super().__init__()
-        self.expression_list: List[Condition|Concatenator] = []
+        self.expression_list: Sequence[Condition|Concatenator] = []
 
     def evaluate(self, evolution: Self) -> bool:
         """
