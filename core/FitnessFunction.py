@@ -20,7 +20,7 @@ class FitnessFunction:
     def __init__(
             self, 
             fitness_function: Callable[[np.ndarray[float]], float], 
-            variable_domains: List[Tuple[float, float]], 
+            variable_domains: list[tuple[float, float]], 
             n_dim: int, 
             clamp_strategy: ClampStrategy=Default):
         self.fitness_function = fitness_function
