@@ -1,8 +1,9 @@
 from dataclasses import dataclass, field
-from typing import List, Iterable, Self
 from core.Individual import Individual
 import singledispatch
 
+# TODO: Replace List with list or abc.collections.Sequence
+from typing import List, Iterable, Self
 
 @dataclass
 class Population:

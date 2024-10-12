@@ -10,7 +10,7 @@ from EvolutionState import EvolutionState
 from EventListenerType import EventListenerType
 from OperatorsPreset import OperatorsPreset
 
-
+# TODO: Replace List with list or abc.collections.Sequence and Tuple with tuple
 from typing import List, Tuple, Callable, Self
 
 

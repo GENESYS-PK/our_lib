@@ -1,4 +1,3 @@
-from typing import Callable, List, Tuple, Self, Any
 from Selection import Selection
 from Crossover import Crossover
 from Mutation import Mutation
@@ -14,6 +13,8 @@ from Elitism import Elitism
 from ClampStrategy import ClampStrategy
 from Population import Population
 
+# TODO: Replace List with list or abc.collections.Sequence and Tuple with tuple
+from typing import Callable, List, Tuple, Self, Any
 
 class EvolutionBuilder:
     """
