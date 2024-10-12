@@ -8,7 +8,7 @@ from core.Population import Population
 from core.Representation import Representation
 
 
-class GeometricalCrossover1(Crossover):
+class GeometricalCrossover3(Crossover):
     """
     A class that implements Geometrical Crossover version 3 (Algorytmy genetyczne: kompendium. T. 1 strona 227)
 
@@ -34,9 +34,6 @@ class GeometricalCrossover1(Crossover):
         :returns: The offspring population (always 1 child).
         """
 
-        if population_parent.population_size < 2:
-            raise ValueError("The population size must be at least 2 to perform the GeometricalCrossover1 operation.")
-
         if self.k < 2 or self.k > population_parent.population_size:
             raise ValueError("The k parameter must be more than 2 and less than population_size")
 
@@ -45,7 +42,7 @@ class GeometricalCrossover1(Crossover):
         drafted_individuals = random.sample(individuals_indices, self.k)
 
         # not sure if this approach is right
-        chance_crossover = round(random.uniform(0, 1), 2)
+        chance_crossover = np.round(np.random.uniform(0, 1), 2)
         if self.probability < chance_crossover <= 1:
             return Population()
 

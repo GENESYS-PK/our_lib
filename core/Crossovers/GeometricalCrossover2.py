@@ -8,7 +8,7 @@ from core.Population import Population
 from core.Representation import Representation
 
 
-class GeometricalCrossover1(Crossover):
+class GeometricalCrossover2(Crossover):
     """
     A class that implements Geometrical Crossover version 2 (Algorytmy genetyczne: kompendium. T. 1 strona 227)
 
@@ -31,9 +31,6 @@ class GeometricalCrossover1(Crossover):
         :returns: The offspring population (always 1 child).
         """
 
-        if population_parent.population_size < 2:
-            raise ValueError("The population size must be at least 2 to perform the GeometricalCrossover2 operation.")
-
         individual_index1 = np.random.randint(population_parent.population_size)
         individual_index2 = np.random.randint(population_parent.population_size)
 
@@ -41,7 +38,7 @@ class GeometricalCrossover1(Crossover):
             individual_index2 = np.random.randint(population_parent.population_size)
 
         # not sure if this approach is right
-        chance_crossover = round(random.uniform(0, 1), 2)
+        chance_crossover = np.round(np.random.uniform(0, 1), 2)
         if self.probability < chance_crossover <= 1:
             return Population()
 
