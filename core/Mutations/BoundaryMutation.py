@@ -1,45 +1,44 @@
 import numpy as np
-from abc import ABC, abstractmethod #
+from abc import ABC, abstractmethod
 from core import Population, Mutation
 from core.Individual import Individual
 import random
 
 
 class BoundaryMutation(Mutation):
-    """
-    Implements boundary mutation where gene values are replaced by boundary values with a given probability.
-
-    :param pbm: The probability of mutating each gene within an individual.
-    :param boundaries: The allowed boundaries for each gene.
-    """
-
     def __init__(self, probability: float, pbm: float, boundaries: list):
+        """
+        Constructor for the BoundaryMutation class.
+
+        Parameters:
+            probability (float): Probability of mutation (between 0 and 1).
+            pbm (float): The probability of mutating each gene within an individual.
+            boundaries (list): The allowed boundaries for each gene.
+        """
         super().__init__(probability)
         self.pbm = pbm  # Probability of boundary mutation for each gene
         self.boundaries = boundaries  # List of [min, max] boundaries for each gene
 
     def _mutate(self, individual: Individual, population: Population) -> None:
         """
-        Perform boundary mutation on an individual.
+        Applies Boundary Mutation to the individual's chromosome.
 
-        :param individual: The individual to mutate.
-        :param population: The population containing the individual.
-        :returns: None
-        """
-        individual.genome = self.boundary_mutation(individual.genome)
+        Parameters:
+            individual (Individual): A single individual to mutate.
+            population (Population): The population containing individuals.
 
-    def boundary_mutation(self, genome):
+        Returns:
+            None: The population with mutated individuals.
         """
-        Apply boundary mutation on the genome of an individual.
+        self.boundary_mutation(individual.chromosome)
 
-        :param genome: List of gene values representing an individual's genome.
-        :returns: Mutated genome.
-        """
-        for i in range(len(genome)):
+    def boundary_mutation(self, chromosome):
+        for i in range(len(chromosome)):
             if np.random.uniform(0, 1) <= self.pbm:
                 # Mutate gene to either lower or upper boundary
                 if np.random.uniform(0, 1) < 0.5:
-                    genome[i] = self.boundaries[i][0]
+                    chromosome[i] = self.boundaries[i][0]
                 else:
-                    genome[i] = self.boundaries[i][1]
-        return genome
+                    chromosome[i] = self.boundaries[i][1]
+
+        return None

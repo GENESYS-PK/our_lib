@@ -1,5 +1,5 @@
 import numpy as np
-from abc import ABC, abstractmethod #
+from abc import ABC, abstractmethod
 from core import Population, Mutation
 from core.Individual import Individual
 import random
@@ -7,16 +7,17 @@ import math
 
 
 class TimeVariantMutation(Mutation):
-    """
-    Implements time-variant mutation where the mutation scale reduces over time.
-
-    :param ypsilon: A constant that controls the strength of the mutation.
-    :param t: Current generation.
-    :param M: Maximum number of generations.
-    :param k: The index of the gene to mutate.
-    """
-
     def __init__(self, probability: float, ypsilon: float, t: int, M: int, k: int):
+        """
+        Constructor for the Time Variant Mutation class.
+
+        Parameters:
+            probability (float): Probability of mutation (between 0 and 1).
+            ypsilon (float): A constant that controls the strength of the mutation.
+            t: Current generation.
+            M: Maximum number of generations.
+            k: The index of the gene to mutate.
+        """
         super().__init__(probability)
         self.ypsilon = ypsilon  # Controls mutation strength
         self.t = t  # Current generation
@@ -25,24 +26,22 @@ class TimeVariantMutation(Mutation):
 
     def _mutate(self, individual: Individual, population: Population) -> None:
         """
-        Perform time-variant mutation on an individual.
+        Applies Time Variant Mutation to the individual's chromosome.
 
-        :param individual: The individual to mutate.
-        :param population: The population containing the individual.
-        :returns: None
-        """
-        individual.genome = self.time_variant_mutation(individual.genome)
+        Parameters:
+            individual (Individual): A single individual to mutate.
+            population (Population): The population containing individuals.
 
-    def time_variant_mutation(self, genome):
+        Returns:
+            None: The population with mutated individuals.
         """
-        Apply time-variant mutation on the genome of an individual.
+        self.time_variant_mutation(individual.chromosome)
 
-        :param genome: List of gene values representing an individual's genome.
-        :returns: Mutated genome.
-        """
-        for j in range(len(genome)):
+    def time_variant_mutation(self, chromosome):
+        for j in range(len(chromosome)):
             r = np.random.uniform(0, 1)
             sigma = 1 - (r ** (1 - self.t / self.M)) ** self.ypsilon
             a = np.random.normal(0, sigma ** 2)
-            genome[self.k] = genome[self.k] + a
-        return genome
+            chromosome[self.k] = chromosome[self.k] + a
+
+        return None
