@@ -10,6 +10,8 @@ class SetOrientedCrossover(Crossover):
     Implements set-oriented crossover method where genes of offspring are determined by parent gene equality
     and random values from a specified range for each gene.
 
+    Algorytmy genetyczne : kompendium. T. 1, Operator krzyżowania dla problemów numerycznych. / T. D. Gwiazda, 2021 (strona 275)
+
     :param how_many_individuals: The number of individuals to create in the offspring.
     :param probability: The probability of performing the crossover operation.
     :param ranges: List of tuples representing the (min, max) range for each gene.
