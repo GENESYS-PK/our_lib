@@ -1,6 +1,5 @@
 import numpy as np
 from core import Crossover, Population
-from core.Individual import Individual
 from core.Population import Population
 
 
@@ -16,7 +15,7 @@ class OnePointAverageCrossover(Crossover):
 
     def _cross(self, population_parent: Population) -> Population:
         """
-        Perform one-point average crossover on the parent population.
+        Perform One Point Average Crossover on the parent population.
 
         :param population_parent: The population to perform the crossover operation on.
         :returns: The offspring population.
@@ -34,19 +33,15 @@ class OnePointAverageCrossover(Crossover):
         parent_y = population_parent.population[parent_indices[1]].chromosome
 
         # Crossover point - select a point for crossover
-        size = min(len(parent_x), len(parent_y))
-        crossover_point = np.random.randint(0, size)
-
-        # Create new individuals where only one point is averaged
-        new_ind_x = np.copy(parent_x)
-        new_ind_y = np.copy(parent_y)
+        shortest_parent_size = min(len(parent_x), len(parent_y))
+        crossover_point = np.random.randint(0, shortest_parent_size)
 
         # Averaging at the crossover point
-        new_ind_x[crossover_point] = (parent_x[crossover_point] + parent_y[crossover_point]) / 2
-        new_ind_y[crossover_point] = (parent_x[crossover_point] + parent_y[crossover_point]) / 2
+        new_gene = (parent_x[crossover_point] + parent_y[crossover_point]) / 2
+        parent_x[crossover_point] = new_gene
+        parent_y[crossover_point] = new_gene
 
         # Add new individuals to the offspring population
-        offspring_population.add_to_population(Individual(new_ind_x))
-        offspring_population.add_to_population(Individual(new_ind_y))
-
+        offspring_population.add_to_population(parent_x)
+        offspring_population.add_to_population(parent_y)
         return offspring_population
