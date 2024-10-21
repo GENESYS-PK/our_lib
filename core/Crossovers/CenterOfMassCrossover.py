@@ -30,9 +30,7 @@ class CenterOfMassCrossover(Crossover):
         :param population_parent: The population to perform the crossover operation on.
         :returns: The offspring population (always 2 children).
         """
-        if population_parent.population_size < 2:
-            raise ValueError("The population size must be at least 2 to perform the CenterOfMassCrossover operation.")
-
+        
         individual_index1 = np.random.randint(population_parent.population_size)
         individual_index2 = np.random.randint(population_parent.population_size)
 

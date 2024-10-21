@@ -34,8 +34,6 @@ class SeedCrossover(Crossover):
         :param population_parent: The population to perform the crossover operation on.
         :returns: The offspring population (always 2 children).
         """
-        if population_parent.population_size < 2:
-            raise ValueError("The population size must be at least 2 to perform the SeedCrossover operation.")
 
         # Check probability of performing crossover
         if np.random.rand() > self.probability:
