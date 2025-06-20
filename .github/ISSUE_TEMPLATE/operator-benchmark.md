@@ -1,8 +1,8 @@
 ---
-name: Operator Benchmark
+name: Operator benchmark
 about: Benchmark existing or proposed genetic operators.
 title: ''
-labels: ''
+labels: benchmark
 assignees: ''
 
 ---

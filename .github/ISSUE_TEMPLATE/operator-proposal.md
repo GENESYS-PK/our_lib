@@ -2,7 +2,7 @@
 name: Operator proposal
 about: Propose a new genetic operator (e.g. crossover, mutation, selection)
 title: ''
-labels: ''
+labels: feature
 assignees: ''
 
 ---
